@@ -1,6 +1,7 @@
 package com.example.quizapp.fragments.question
 
 import android.widget.Toast
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,31 +25,39 @@ class QuestionViewModel : ViewModel() {
     //region LiveData
     private val currentQuestion:MutableLiveData<QuestionModel> =MutableLiveData()
     fun observeCurrentQuestion():LiveData<QuestionModel> = currentQuestion
-    //endregion
 
     private val isLoading:MutableLiveData<Boolean> = MutableLiveData()
     fun observeLoadingState():LiveData<Boolean> = isLoading
+
+    private val currentPosition:MutableLiveData<String> = MutableLiveData()
+    fun observeCurrentQuestionPos():LiveData<String> = currentPosition
+    //endregion
     init {
        getQuestions()
     }
-
+    fun buttonClicked(){
+        if (currentQuestionPosition<listOfQuestions.size){
+            currentQuestion.postValue(listOfQuestions.get(currentQuestionPosition++))
+            currentPosition.postValue("$currentQuestionPosition/20")
+        }
+    }
     fun getQuestions(){
         val disposable= Single.fromCallable{
+            isLoading.postValue(true)
             Thread.sleep(400)
             questionsApi.getQuestions(API_KEY,"Linux")
         }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe({
-//                Toast.makeText(context,"Success", Toast.LENGTH_LONG).show()
                        listOfQuestions.addAll(it)
                 if (currentQuestionPosition<listOfQuestions.size){
                     currentQuestion.postValue(listOfQuestions.get(currentQuestionPosition++))
                 }
+                currentPosition.postValue("$currentQuestionPosition/20")
                 isLoading.postValue(false)
             },{
                 isLoading.postValue(false)
-//                Toast.makeText(context,"$it", Toast.LENGTH_LONG).show()
             })
         compositeDisposable.add(disposable)
     }

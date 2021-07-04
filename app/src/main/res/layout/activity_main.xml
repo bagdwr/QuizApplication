@@ -6,10 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/fragmentId"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="10dp"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
