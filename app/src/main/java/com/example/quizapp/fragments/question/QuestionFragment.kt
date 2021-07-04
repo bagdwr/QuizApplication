@@ -47,8 +47,18 @@ class QuestionFragment : Fragment() {
         viewModel.observeCurrentQuestionPos().observe(this.viewLifecycleOwner,{
             questionPos.text=it.toString()
         })
-        nextBtn.setOnClickListener{
-            viewModel.buttonClicked()
-        }
+        viewModel.observeIsFinished().observe(this.viewLifecycleOwner,{
+            if (it==true){
+                nextBtn.text="Finish"
+                nextBtn.setOnClickListener{
+                    tvQuestion.text=""
+                    questionPos.text=""
+                }
+            }else{
+                nextBtn.setOnClickListener{
+                    viewModel.buttonClicked()
+                }
+            }
+        })
     }
 }

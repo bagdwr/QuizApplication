@@ -31,6 +31,10 @@ class QuestionViewModel : ViewModel() {
 
     private val currentPosition:MutableLiveData<String> = MutableLiveData()
     fun observeCurrentQuestionPos():LiveData<String> = currentPosition
+
+    private val isFinished:MutableLiveData<Boolean> =MutableLiveData()
+    fun observeIsFinished():LiveData<Boolean> = isFinished
+
     //endregion
     init {
        getQuestions()
@@ -39,6 +43,9 @@ class QuestionViewModel : ViewModel() {
         if (currentQuestionPosition<listOfQuestions.size){
             currentQuestion.postValue(listOfQuestions.get(currentQuestionPosition++))
             currentPosition.postValue("$currentQuestionPosition/20")
+            isFinished.postValue(false)
+        }else{
+            isFinished.postValue(true)
         }
     }
     fun getQuestions(){
@@ -56,6 +63,7 @@ class QuestionViewModel : ViewModel() {
                 }
                 currentPosition.postValue("$currentQuestionPosition/20")
                 isLoading.postValue(false)
+                isFinished.postValue(false)
             },{
                 isLoading.postValue(false)
             })
