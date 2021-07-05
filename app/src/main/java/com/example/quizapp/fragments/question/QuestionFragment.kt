@@ -42,6 +42,13 @@ class QuestionFragment : Fragment() {
             }
         })
         viewModel.observeCurrentQuestion().observe(this.viewLifecycleOwner, {
+            if (!it.isMultiple){
+                val answerFragment=OneAnswerFragment.createFragment(it)
+                fragmentManager
+                    ?.beginTransaction()
+                    ?.replace(R.id.answers,answerFragment)
+                    ?.commit()
+            }
             tvQuestion.text=it.question.toString()
         })
         viewModel.observeCurrentQuestionPos().observe(this.viewLifecycleOwner,{

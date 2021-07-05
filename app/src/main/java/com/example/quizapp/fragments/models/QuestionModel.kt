@@ -1,6 +1,7 @@
 package com.example.quizapp.fragments.models
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 class QuestionModel(
     @SerializedName("id") val id:Long,
@@ -11,4 +12,4 @@ class QuestionModel(
     //TODO как заменить со string
     @SerializedName("correct_answers") val correctAnswersModel: CorrectAnswersModel,
     @SerializedName("difficulty")val difficulty:String
-)
+) : Serializable
