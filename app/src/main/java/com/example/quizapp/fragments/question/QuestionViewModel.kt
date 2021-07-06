@@ -1,7 +1,5 @@
 package com.example.quizapp.fragments.question
 
-import android.widget.Toast
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,53 +16,64 @@ class QuestionViewModel : ViewModel() {
     //region Vars
     private val questionsApi: QuestionsApi = NetworkSetuper.questionApi
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
-    private val listOfQuestions= mutableListOf<QuestionModel>()
-    private var currentQuestionPosition=0
+    private val listOfQuestions = mutableListOf<QuestionModel>()
+    private var currentQuestionPosition = 0
     //endregion
 
     //region LiveData
-    private val currentQuestion:MutableLiveData<QuestionModel> =MutableLiveData()
-    fun observeCurrentQuestion():LiveData<QuestionModel> = currentQuestion
+    private val currentQuestion: MutableLiveData<QuestionModel> = MutableLiveData()
+    fun observeCurrentQuestion(): LiveData<QuestionModel> = currentQuestion
 
-    private val isLoading:MutableLiveData<Boolean> = MutableLiveData()
-    fun observeLoadingState():LiveData<Boolean> = isLoading
+    private val isLoading: MutableLiveData<Boolean> = MutableLiveData()
+    fun observeLoadingState(): LiveData<Boolean> = isLoading
 
-    private val currentPosition:MutableLiveData<String> = MutableLiveData()
-    fun observeCurrentQuestionPos():LiveData<String> = currentPosition
+    private val currentPosition: MutableLiveData<String> = MutableLiveData()
+    fun observeCurrentQuestionPos(): LiveData<String> = currentPosition
 
-    private val isFinished:MutableLiveData<Boolean> =MutableLiveData()
-    fun observeIsFinished():LiveData<Boolean> = isFinished
+    private val isFinished: MutableLiveData<Boolean> = MutableLiveData()
+    fun observeIsFinished(): LiveData<Boolean> = isFinished
 
+    private val isNeedToCheckAnswers: MutableLiveData<QuestionModel.Type> = MutableLiveData()
+    fun observeIsNeedToCheckAnswers(): LiveData<QuestionModel.Type> = isNeedToCheckAnswers
     //endregion
+
+
     init {
-       getQuestions()
+        getQuestions()
     }
-    fun buttonClicked(){
-        if (currentQuestionPosition<listOfQuestions.size){
-            currentQuestion.postValue(listOfQuestions.get(currentQuestionPosition++))
-            currentPosition.postValue("$currentQuestionPosition/20")
-            isFinished.postValue(false)
-        }else{
-            isFinished.postValue(true)
-        }
+
+    fun buttonClicked() {
+
+        isNeedToCheckAnswers.postValue(
+                listOfQuestions[currentQuestionPosition].getQuestionType()
+        )
+
+//        if (currentQuestionPosition < listOfQuestions.size) {
+//            currentQuestion.postValue(listOfQuestions.get(currentQuestionPosition++))
+//            currentPosition.postValue("$currentQuestionPosition/20")
+//            isFinished.postValue(false)
+//        } else {
+//            isFinished.postValue(true)
+//        }
     }
-    fun getQuestions(){
-        val disposable= Single.fromCallable{
+
+    fun getQuestions() {
+        val disposable = Single.fromCallable {
             isLoading.postValue(true)
             Thread.sleep(400)
-            questionsApi.getQuestions(API_KEY,"Linux")
+            questionsApi.getQuestions(API_KEY, "Linux")
         }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe({
-                       listOfQuestions.addAll(it)
-                if (currentQuestionPosition<listOfQuestions.size){
+                listOfQuestions.addAll(it)
+                if (currentQuestionPosition < listOfQuestions.size) {
                     currentQuestion.postValue(listOfQuestions.get(currentQuestionPosition++))
                 }
                 currentPosition.postValue("$currentQuestionPosition/20")
                 isLoading.postValue(false)
                 isFinished.postValue(false)
-            },{
+            }, {
                 isLoading.postValue(false)
             })
         compositeDisposable.add(disposable)
@@ -73,5 +82,9 @@ class QuestionViewModel : ViewModel() {
     override fun onCleared() {
         super.onCleared()
         compositeDisposable.clear()
+    }
+
+    enum class Answer {
+
     }
 }
