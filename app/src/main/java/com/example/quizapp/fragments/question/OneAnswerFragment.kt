@@ -13,7 +13,6 @@ import com.example.quizapp.R
 import com.example.quizapp.fragments.models.QuestionModel
 
 class OneAnswerFragment:Fragment() {
-//    private val viewModel: QuestionViewModel by viewModels()
     private lateinit var radioGroup: RadioGroup
     private lateinit var radio1:RadioButton
     private lateinit var radio2:RadioButton
