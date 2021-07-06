@@ -13,7 +13,7 @@ import com.example.quizapp.R
 import com.example.quizapp.fragments.models.QuestionModel
 
 class OneAnswerFragment:Fragment() {
-    private val viewModel: QuestionViewModel by viewModels()
+//    private val viewModel: QuestionViewModel by viewModels()
     private lateinit var radioGroup: RadioGroup
     private lateinit var radio1:RadioButton
     private lateinit var radio2:RadioButton
@@ -23,7 +23,7 @@ class OneAnswerFragment:Fragment() {
     private lateinit var radio6:RadioButton
     companion object{
          private const val answers="ANSWERS"
-         fun createFragment(questionModel: QuestionModel):OneAnswerFragment{
+         fun createFragment(questionModel: QuestionModel): OneAnswerFragment{
               val fragment=OneAnswerFragment()
               val bundle=Bundle()
               bundle.putSerializable(answers,questionModel)
@@ -65,4 +65,16 @@ class OneAnswerFragment:Fragment() {
 //        Toast.makeText(context,"${radioBtn.text}",Toast.LENGTH_LONG).show()
 //    }
 
+    fun getChosenAnswer(): String? {
+        val listOfRadioBtn: List<RadioButton> =
+                listOf(
+                        radio1, radio2, radio3, radio4, radio5, radio6
+                )
+        listOfRadioBtn.forEach { radioButton ->
+            if(radioButton.isChecked) {
+                return radioButton.text.toString()
+            }
+        }
+        return null
+    }
 }
