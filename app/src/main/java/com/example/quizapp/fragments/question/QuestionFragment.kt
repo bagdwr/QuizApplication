@@ -8,8 +8,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.example.quizapp.R
+import com.example.quizapp.fragments.models.QuestionModel
 
 class QuestionFragment : Fragment() {
     private val viewModel: QuestionViewModel by viewModels()
@@ -32,6 +34,7 @@ class QuestionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         viewModel.observeLoadingState().observe(this.viewLifecycleOwner, object:androidx.lifecycle.Observer<Boolean>{
             override fun onChanged(t: Boolean?) {
                  if (t==true){
@@ -41,30 +44,46 @@ class QuestionFragment : Fragment() {
                  }
             }
         })
+
         viewModel.observeCurrentQuestion().observe(this.viewLifecycleOwner, {
-            if (!it.isMultiple){
+            if (it.getQuestionType()==QuestionModel.Type.SINGLE){
                 val answerFragment=OneAnswerFragment.createFragment(it)
-                fragmentManager
-                    ?.beginTransaction()
-                    ?.replace(R.id.answers,answerFragment)
-                    ?.commit()
+                childFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.answers,answerFragment,"${QuestionModel.Type.SINGLE}")
+                    .commit()
+            }else{
+                //TODO MULTIPLE Answer fragment
             }
-            tvQuestion.text=it.question.toString()
+            tvQuestion.text=it.question
+            nextBtn.visibility=View.VISIBLE
         })
+
         viewModel.observeCurrentQuestionPos().observe(this.viewLifecycleOwner,{
             questionPos.text=it.toString()
         })
+
         viewModel.observeIsFinished().observe(this.viewLifecycleOwner,{
             if (it==true){
                 nextBtn.text="Finish"
+                tvQuestion.text=""
                 nextBtn.setOnClickListener{
-                    tvQuestion.text=""
-                    questionPos.text=""
+
                 }
             }else{
                 nextBtn.setOnClickListener{
                     viewModel.buttonClicked()
                 }
+            }
+        })
+
+        viewModel.observeIsNeedToCheck().observe(this.viewLifecycleOwner,{
+            if (it==QuestionModel.Type.SINGLE){
+                val chosenAnswer=(childFragmentManager.findFragmentByTag("${QuestionModel.Type.SINGLE}") as OneAnswerFragment).getChosenAnswer()
+                Toast.makeText(requireContext(),"answer: ${chosenAnswer}", Toast.LENGTH_SHORT).show()
+            }
+            if (it==QuestionModel.Type.MULTIPLE){
+
             }
         })
     }

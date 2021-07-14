@@ -35,23 +35,29 @@ class QuestionViewModel : ViewModel() {
     private val isFinished:MutableLiveData<Boolean> =MutableLiveData()
     fun observeIsFinished():LiveData<Boolean> = isFinished
 
+    private val isNeedToCheckAnswers:MutableLiveData<QuestionModel.Type> = MutableLiveData()
+    fun observeIsNeedToCheck():LiveData<QuestionModel.Type> = isNeedToCheckAnswers
+
     //endregion
     init {
        getQuestions()
     }
     fun buttonClicked(){
         if (currentQuestionPosition<listOfQuestions.size){
+            isNeedToCheckAnswers.postValue(
+                    listOfQuestions[currentQuestionPosition].getQuestionType()
+            )
             currentQuestion.postValue(listOfQuestions.get(currentQuestionPosition++))
             currentPosition.postValue("$currentQuestionPosition/20")
             isFinished.postValue(false)
         }else{
+            currentPosition.postValue("")
             isFinished.postValue(true)
         }
     }
     fun getQuestions(){
         val disposable= Single.fromCallable{
             isLoading.postValue(true)
-            Thread.sleep(400)
             questionsApi.getQuestions(API_KEY,"Linux")
         }
             .observeOn(AndroidSchedulers.mainThread())
@@ -59,6 +65,9 @@ class QuestionViewModel : ViewModel() {
             .subscribe({
                        listOfQuestions.addAll(it)
                 if (currentQuestionPosition<listOfQuestions.size){
+//                    isNeedToCheckAnswers.postValue(
+//                            listOfQuestions[currentQuestionPosition].getQuestionType()
+//                    )
                     currentQuestion.postValue(listOfQuestions.get(currentQuestionPosition++))
                 }
                 currentPosition.postValue("$currentQuestionPosition/20")
