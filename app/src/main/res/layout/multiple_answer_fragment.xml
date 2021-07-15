@@ -4,52 +4,48 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <RadioGroup
-        android:id="@+id/ragioGroup"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <RadioButton
-            android:id="@+id/radio1"
+        <CheckBox
+            android:id="@+id/check1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="one"
+            app:layout_constraintTop_toTopOf="parent"
             />
-        <RadioButton
-            android:id="@+id/radio2"
+        <CheckBox
+            android:id="@+id/check2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="two"
+            app:layout_constraintTop_toBottomOf="@id/check1"
             />
-        <RadioButton
-            android:id="@+id/radio3"
+        <CheckBox
+            android:id="@+id/check3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="three"
+            app:layout_constraintTop_toBottomOf="@id/check2"
             />
-        <RadioButton
-            android:id="@+id/radio4"
+        <CheckBox
+            android:id="@+id/check4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="four"
+            app:layout_constraintTop_toBottomOf="@id/check3"
             />
-        <RadioButton
-            android:id="@+id/radio5"
+        <CheckBox
+            android:id="@+id/check5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="five"
+            app:layout_constraintTop_toBottomOf="@id/check4"
             />
-        <RadioButton
-            android:id="@+id/radio6"
+        <CheckBox
+            android:id="@+id/check6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="six"
+            app:layout_constraintTop_toBottomOf="@id/check5"
             />
-
-    </RadioGroup>
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
