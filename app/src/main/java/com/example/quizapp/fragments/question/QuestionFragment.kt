@@ -1,6 +1,7 @@
 package com.example.quizapp.fragments.question
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -47,13 +48,18 @@ class QuestionFragment : Fragment() {
 
         viewModel.observeCurrentQuestion().observe(this.viewLifecycleOwner, {
             if (it.getQuestionType()==QuestionModel.Type.SINGLE){
-                val answerFragment=OneAnswerFragment.createFragment(it)
+                val oneAnswerFragment=OneAnswerFragment.createFragment(it)
                 childFragmentManager
                     .beginTransaction()
-                    .replace(R.id.answers,answerFragment,"${QuestionModel.Type.SINGLE}")
+                    .replace(R.id.answers,oneAnswerFragment,"${QuestionModel.Type.SINGLE}")
                     .commit()
-            }else{
-                //TODO MULTIPLE Answer fragment
+            }
+            if (it.getQuestionType()==QuestionModel.Type.MULTIPLE){
+                val multipleAnswerFragment=ManyAnswerFragment.createFragment(it)
+                childFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.answers,multipleAnswerFragment,"${QuestionModel.Type.MULTIPLE}")
+                    .commit()
             }
             tvQuestion.text=it.question
             nextBtn.visibility=View.VISIBLE
@@ -79,11 +85,13 @@ class QuestionFragment : Fragment() {
 
         viewModel.observeIsNeedToCheck().observe(this.viewLifecycleOwner,{
             if (it==QuestionModel.Type.SINGLE){
-                val chosenAnswer=(childFragmentManager.findFragmentByTag("${QuestionModel.Type.SINGLE}") as OneAnswerFragment).getChosenAnswer()
-                Toast.makeText(requireContext(),"answer: ${chosenAnswer}", Toast.LENGTH_SHORT).show()
+                val chosenAnswers=(childFragmentManager.findFragmentByTag("${QuestionModel.Type.SINGLE}") as OneAnswerFragment).getChosenAnswer()
+                Toast.makeText(requireContext(),"answer: ${chosenAnswers}", Toast.LENGTH_SHORT).show()
             }
-            if (it==QuestionModel.Type.MULTIPLE){
-
+            if(it==QuestionModel.Type.MULTIPLE){
+                val chosenAnswers=(childFragmentManager.findFragmentByTag("${QuestionModel.Type.MULTIPLE}") as ManyAnswerFragment).getChosenMultipleAnswers()
+                Toast.makeText(requireContext(),"answers:${chosenAnswers.toString()}",Toast.LENGTH_LONG).show()
+                Log.e("TYPE.MULTIPLE","ERROR")
             }
         })
     }

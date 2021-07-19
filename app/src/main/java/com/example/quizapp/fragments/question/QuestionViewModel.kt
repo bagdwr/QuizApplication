@@ -44,11 +44,11 @@ class QuestionViewModel : ViewModel() {
     }
     fun buttonClicked(){
         if (currentQuestionPosition<listOfQuestions.size){
-            isNeedToCheckAnswers.postValue(
-                    listOfQuestions[currentQuestionPosition].getQuestionType()
-            )
-            currentQuestion.postValue(listOfQuestions.get(currentQuestionPosition++))
+            currentQuestion.postValue(listOfQuestions.get(currentQuestionPosition))
             currentPosition.postValue("$currentQuestionPosition/20")
+            isNeedToCheckAnswers.postValue(
+                listOfQuestions[currentQuestionPosition++].getQuestionType()
+            )
             isFinished.postValue(false)
         }else{
             currentPosition.postValue("")

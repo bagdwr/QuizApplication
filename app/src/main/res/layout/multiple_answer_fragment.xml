@@ -9,6 +9,8 @@
             android:id="@+id/check1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:visibility="visible"
             tools:text="one"
             app:layout_constraintTop_toTopOf="parent"
             />
@@ -16,6 +18,8 @@
             android:id="@+id/check2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:visibility="visible"
             tools:text="two"
             app:layout_constraintTop_toBottomOf="@id/check1"
             />
@@ -23,6 +27,8 @@
             android:id="@+id/check3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:visibility="visible"
             tools:text="three"
             app:layout_constraintTop_toBottomOf="@id/check2"
             />
@@ -30,6 +36,8 @@
             android:id="@+id/check4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:visibility="visible"
             tools:text="four"
             app:layout_constraintTop_toBottomOf="@id/check3"
             />
@@ -37,6 +45,8 @@
             android:id="@+id/check5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:visibility="visible"
             tools:text="five"
             app:layout_constraintTop_toBottomOf="@id/check4"
             />
@@ -44,6 +54,8 @@
             android:id="@+id/check6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:visibility="visible"
             tools:text="six"
             app:layout_constraintTop_toBottomOf="@id/check5"
             />
