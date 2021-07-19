@@ -44,11 +44,12 @@ class QuestionViewModel : ViewModel() {
     }
     fun buttonClicked(){
         if (currentQuestionPosition<listOfQuestions.size){
+            currentPosition.postValue((currentQuestionPosition+1).toString()+"/20")
             currentQuestion.postValue(listOfQuestions.get(currentQuestionPosition))
-            currentPosition.postValue("$currentQuestionPosition/20")
             isNeedToCheckAnswers.postValue(
-                listOfQuestions[currentQuestionPosition++].getQuestionType()
+                listOfQuestions[currentQuestionPosition].getQuestionType()
             )
+            currentQuestionPosition++
             isFinished.postValue(false)
         }else{
             currentPosition.postValue("")
@@ -65,12 +66,9 @@ class QuestionViewModel : ViewModel() {
             .subscribe({
                        listOfQuestions.addAll(it)
                 if (currentQuestionPosition<listOfQuestions.size){
-//                    isNeedToCheckAnswers.postValue(
-//                            listOfQuestions[currentQuestionPosition].getQuestionType()
-//                    )
+                    currentPosition.postValue((currentQuestionPosition+1).toString()+"/20")
                     currentQuestion.postValue(listOfQuestions.get(currentQuestionPosition++))
                 }
-                currentPosition.postValue("$currentQuestionPosition/20")
                 isLoading.postValue(false)
                 isFinished.postValue(false)
             },{

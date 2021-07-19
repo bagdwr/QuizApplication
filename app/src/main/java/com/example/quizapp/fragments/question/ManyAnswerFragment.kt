@@ -9,6 +9,7 @@ import android.widget.CheckBox
 import androidx.fragment.app.Fragment
 import com.example.quizapp.R
 import com.example.quizapp.fragments.models.QuestionModel
+import kotlin.math.log
 
 class ManyAnswerFragment: Fragment() {
     private lateinit var listOfCheckBox:List<CheckBox>
@@ -51,7 +52,7 @@ class ManyAnswerFragment: Fragment() {
         }
     }
 
-    fun getChosenMultipleAnswers():MutableList<String>?{
+    fun getChosenMultipleAnswers():List<String>?{
         val answers:MutableList<String> = mutableListOf()
         listOfCheckBox.forEach{
             checkBox ->
@@ -59,7 +60,6 @@ class ManyAnswerFragment: Fragment() {
                 answers.add(checkBox.text.toString())
             }
         }
-        Log.e("getChosenMultipleAnswer","Error")
         return answers
     }
 }
