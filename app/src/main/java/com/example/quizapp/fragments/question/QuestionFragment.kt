@@ -91,7 +91,7 @@ class QuestionFragment : Fragment() {
             }
             if(it==QuestionModel.Type.MULTIPLE){
                 val chosenAnswers=(childFragmentManager.findFragmentByTag("${QuestionModel.Type.MULTIPLE}") as ManyAnswerFragment).getChosenMultipleAnswers()
-                Toast.makeText(requireContext(),"answers:${chosenAnswers.toString()}",Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(),"answers:${chosenAnswers}",Toast.LENGTH_LONG).show()
             }
         })
     }
