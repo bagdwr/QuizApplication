@@ -85,27 +85,14 @@ class QuestionFragment : Fragment() {
         })
 
         viewModel.observeIsNeedToCheck().observe(this.viewLifecycleOwner,{
-
             if (it==QuestionModel.Type.SINGLE){
                 val chosenAnswer=(childFragmentManager.findFragmentByTag("${QuestionModel.Type.SINGLE}") as OneAnswerFragment).getChosenAnswer()
                 Toast.makeText(requireContext(),"answer: ${chosenAnswer}", Toast.LENGTH_SHORT).show()
-
-                nextBtn.setOnClickListener{
-                    clicked(QuestionModel.Type.SINGLE,chosenAnswer)
-                }
             }
             if(it==QuestionModel.Type.MULTIPLE){
                 val chosenAnswers=(childFragmentManager.findFragmentByTag("${QuestionModel.Type.MULTIPLE}") as ManyAnswerFragment).getChosenMultipleAnswers()
                 Toast.makeText(requireContext(),"answers:${chosenAnswers.toString()}",Toast.LENGTH_LONG).show()
-                clicked(QuestionModel.Type.MULTIPLE,chosenAnswers)
             }
         })
-    }
-
-    fun clicked(questionType:QuestionModel.Type,answers:List<String>?){
-
-    }
-    fun clicked(questionType:QuestionModel.Type,answers:String?){
-
     }
 }
